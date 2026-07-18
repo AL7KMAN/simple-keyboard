@@ -9,7 +9,7 @@
                 latin:keyStyle="languageSwitchKeyStyle" />
             <Key
                 latin:keyStyle="spaceKeyStyle"
-                latin:keySpec="      .x.      "
+                latin:keySpec="      .×.      "
                 latin:keyWidth="45.0%p" />
             <Key
                 latin:keyStyle="zwnjKeyStyle" />
@@ -20,7 +20,7 @@
         >
             <Key
                 latin:keyStyle="spaceKeyStyle"
-                latin:keySpec="      .x.      "
+                latin:keySpec="      .×.      "
                 latin:keyWidth="54.0%p" />
             <Key
                 latin:keyStyle="zwnjKeyStyle" />
@@ -32,13 +32,13 @@
                 latin:keyStyle="languageSwitchKeyStyle" />
             <Key
                 latin:keyStyle="spaceKeyStyle"
-                latin:keySpec="      .x.      "
+                latin:keySpec="      .×.      "
                 latin:keyWidth="54%p" />
         </case>
         <default>
             <Key
                 latin:keyStyle="spaceKeyStyle"
-                latin:keySpec="      .x.      "
+                latin:keySpec="      .×.      "
                 latin:keyWidth="63%p" />
         </default>
     </switch>
