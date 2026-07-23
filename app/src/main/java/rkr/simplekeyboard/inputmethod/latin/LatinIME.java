@@ -810,30 +810,31 @@ public static String getReplacement(String input) {
     }
 
     // Implementation of {@link KeyboardActionListener}.
-    @Override
+        @Override
     public void onCodeInput(final int codePoint, final int x, final int y,
             final boolean isKeyRepeat) {
-            if (codePoint == 32 || codePoint == Constants.CODE_SPACE) {
-    InputConnection ic = getCurrentInputConnection();
-    if (ic != null) {
-        CharSequence textBefore = ic.getTextBeforeCursor(50, 0);
-        if (textBefore != null && textBefore.length() > 0) {
-            String[] words = textBefore.toString().split("\\s+");
-            if (words.length > 0) {
-                String lastWord = words[words.length - 1].trim();
-                if (wordReplacements.containsKey(lastWord)) {
-                    ic.deleteSurroundingText(lastWord.length(), 0);
-                    ic.commitText(wordReplacements.get(lastWord) + " ", 1);
-                    return;
+        if (codePoint == 32 || codePoint == Constants.CODE_SPACE) {
+            android.view.inputmethod.InputConnection ic = getCurrentInputConnection();
+            if (ic != null) {
+                CharSequence textBefore = ic.getTextBeforeCursor(50, 0);
+                if (textBefore != null && textBefore.length() > 0) {
+                    String[] words = textBefore.toString().split("\\s+");
+                    if (words.length > 0) {
+                        String lastWord = words[words.length - 1].trim();
+                        if (wordReplacements.containsKey(lastWord)) {
+                            ic.deleteSurroundingText(lastWord.length(), 0);
+                            ic.commitText(wordReplacements.get(lastWord) + " ", 1);
+                            return;
+                        }
+                    }
                 }
             }
         }
-    }
-}
 
-        final Event event = createSoftwareKeypressEvent(getCodePointForKeyboard(codePoint), isKeyRepeat);
+        final Event event = createSoftwareKeypressEvent(getCodePointForKeyboard(codePoint), x, y, isKeyRepeat);
         onEvent(event);
     }
+
 
     // This method is public for testability of LatinIME, but also in the future it should
     // completely replace #onCodeInput.
