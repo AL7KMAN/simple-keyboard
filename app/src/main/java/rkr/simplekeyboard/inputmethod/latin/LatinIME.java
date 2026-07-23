@@ -77,10 +77,12 @@ import rkr.simplekeyboard.inputmethod.latin.utils.ViewLayoutUtils;
  * Input method implementation for Qwerty'ish keyboard.
  */
 public class LatinIME extends InputMethodService implements KeyboardActionListener,
-      private final java.util.Map<String, String> wordReplacements = new java.util.HashMap<>();
-
         RichInputMethodManager.SubtypeChangedListener {
+
+    private final java.util.Map<String, String> wordReplacements = new java.util.HashMap<>();
+
     static final String TAG = LatinIME.class.getSimpleName();
+
     private static final boolean TRACE = false;
 
     private static final int EXTENDED_TOUCHABLE_REGION_HEIGHT = 100;
