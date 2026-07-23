@@ -77,6 +77,72 @@ import rkr.simplekeyboard.inputmethod.latin.utils.ViewLayoutUtils;
  */
 public class LatinIME extends InputMethodService implements KeyboardActionListener,
         RichInputMethodManager.SubtypeChangedListener {
+       private static final java.util.Map<String, String> wordReplacements = new java.util.HashMap<>();
+
+static {
+    wordReplacements.put("كش", "كس");
+    wordReplacements.put(" عل", "عليكم السلام ورحمه الله وبركاته");
+    wordReplacements.put("ابقحبه", "القحبه");
+    wordReplacements.put("كش", "كس");
+    wordReplacements.put("با", "يا");
+    wordReplacements.put("اتيك", "انيك");
+    wordReplacements.put("القحبهي", "القحبه");
+    wordReplacements.put("كسمكي", "كسمك");
+    wordReplacements.put("قخبه", "قحبه");
+    wordReplacements.put("الخرام", "الحرام");
+    wordReplacements.put("الكيز", "الطيز");
+    wordReplacements.put("كمسك", "كسمك");
+    wordReplacements.put("كشمك", "كسمك");
+    wordReplacements.put("غبد", "عبد");
+    wordReplacements.put("شددش", "شدشد");
+    wordReplacements.put("ععال", "تعال");
+    wordReplacements.put("اتا", "انا");
+    wordReplacements.put("القخهب", "القحبه");
+    wordReplacements.put("كلمة16", "البديل16");
+    wordReplacements.put("كلمة17", "البديل17");
+    wordReplacements.put("كلمة18", "البديل18");
+    wordReplacements.put("كلمة19", "البديل19");
+    wordReplacements.put("كلمة20", "البديل20");
+    wordReplacements.put("كلمة21", "البديل21");
+    wordReplacements.put("كلمة22", "البديل22");
+    wordReplacements.put("كلمة23", "البديل23");
+    wordReplacements.put("كلمة24", "البديل24");
+    wordReplacements.put("كلمة25", "البديل25");
+    wordReplacements.put("كلمة26", "البديل26");
+    wordReplacements.put("كلمة27", "البديل27");
+    wordReplacements.put("كلمة28", "البديل28");
+    wordReplacements.put("كلمة29", "البديل29");
+    wordReplacements.put("كلمة30", "البديل30");
+    wordReplacements.put("كلمة31", "البديل31");
+    wordReplacements.put("كلمة32", "البديل32");
+    wordReplacements.put("كلمة33", "البديل33");
+    wordReplacements.put("كلمة34", "البديل34");
+    wordReplacements.put("كلمة35", "البديل35");
+    wordReplacements.put("كلمة36", "البديل36");
+    wordReplacements.put("كلمة37", "البديل37");
+    wordReplacements.put("كلمة38", "البديل38");
+    wordReplacements.put("كلمة39", "البديل39");
+    wordReplacements.put("كلمة40", "البديل40");
+    wordReplacements.put("كلمة41", "البديل41");
+    wordReplacements.put("كلمة42", "البديل42");
+    wordReplacements.put("كلمة43", "البديل43");
+    wordReplacements.put("كلمة44", "البديل44");
+    wordReplacements.put("كلمة45", "البديل45");
+    wordReplacements.put("كلمة46", "البديل46");
+    wordReplacements.put("كلمة47", "البديل47");
+    wordReplacements.put("كلمة48", "البديل48");
+    wordReplacements.put("كلمة49", "البديل49");
+    wordReplacements.put("كلمة50", "البديل50");
+    
+}
+
+public static String getReplacement(String input) {
+    if (input != null && wordReplacements.containsKey(input.trim())) {
+        return wordReplacements.get(input.trim());
+    }
+    return input;
+}
+ 
     static final String TAG = LatinIME.class.getSimpleName();
     private static final boolean TRACE = false;
 
