@@ -273,10 +273,10 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         wordReplacements.put("الخرام", "الحرام");
         wordReplacements.put("با", "يا");
         wordReplacements.put("ععال", "تعال");
-        wordReplacements.put("قخبه", "قحبه);
+        wordReplacements.put("قخبه", "قحبه");
         wordReplacements.put("كيز", "طيز");
         wordReplacements.put("القهبه", "القحبه");
-        wordReplacements.put("اكرب", "اركب);
+        wordReplacements.put("اكرب", "اركب");
         wordReplacements.put("دشدش", "شدشد");
         wordReplacements.put("كيمك", "كسمك");
         wordReplacements.put("الحقهب", "القحبه");
