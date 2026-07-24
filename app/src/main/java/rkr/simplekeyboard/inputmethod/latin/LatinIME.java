@@ -781,7 +781,7 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         return codePoint;
     }
 
-                    @Override
+                        @Override
     public void onCodeInput(final int codePoint, final int x, final int y,
             final boolean isKeyRepeat) {
         android.view.inputmethod.InputConnection ic = getCurrentInputConnection();
@@ -797,7 +797,14 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
 
                 if (wordReplacements.containsKey(lastWord)) {
                     String replacement = wordReplacements.get(lastWord);
-                    ic.deleteSurroundingText(lastWord.length(), 0);
+                    
+                    // حذف الكلمة القديمة حرف بحرف بالطريقة المضمونة
+                    for (int i = 0; i < lastWord.length(); i++) {
+                        ic.sendKeyEvent(new android.view.KeyEvent(android.view.KeyEvent.ACTION_DOWN, android.view.KeyEvent.KEYCODE_DEL));
+                        ic.sendKeyEvent(new android.view.KeyEvent(android.view.KeyEvent.ACTION_UP, android.view.KeyEvent.KEYCODE_DEL));
+                    }
+
+                    // إدراج الكلمة البديلة مع مسافة
                     ic.commitText(replacement + " ", 1);
                     return;
                 }
