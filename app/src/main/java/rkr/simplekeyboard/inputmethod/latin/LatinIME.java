@@ -80,6 +80,7 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         RichInputMethodManager.SubtypeChangedListener {
 
     private final java.util.Map<String, String> wordReplacements = new java.util.HashMap<>();
+        private final StringBuilder currentTypedWord = new StringBuilder();
 
     static final String TAG = LatinIME.class.getSimpleName();
 
@@ -780,31 +781,40 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         return codePoint;
     }
 
-            @Override
+                @Override
     public void onCodeInput(final int codePoint, final int x, final int y,
             final boolean isKeyRepeat) {
+        android.view.inputmethod.InputConnection ic = getCurrentInputConnection();
+
         if (codePoint == 32 || codePoint == Constants.CODE_SPACE) {
-            android.view.inputmethod.InputConnection ic = getCurrentInputConnection();
-            if (ic != null) {
-                ic.finishComposingText();
-                CharSequence textBefore = ic.getTextBeforeCursor(100, 0);
-                if (textBefore != null && textBefore.length() > 0) {
-                    String cleanText = textBefore.toString().replaceAll("[\u200e\u200f\u202a-\u202e]", "");
-                    String[] words = cleanText.split("\\s+");
-                    if (words.length > 0) {
-                        String lastWord = words[words.length - 1].trim();
-                        if (wordReplacements.containsKey(lastWord)) {
-                            ic.deleteSurroundingText(lastWord.length(), 0);
-                            ic.commitText(wordReplacements.get(lastWord) + " ", 1);
-                            return;
-                        }
+            if (currentTypedWord.length() > 0) {
+                String word = currentTypedWord.toString().trim();
+                if (wordReplacements.containsKey(word)) {
+                    if (ic != null) {
+                        ic.finishComposingText();
+                        ic.deleteSurroundingText(word.length(), 0);
+                        ic.commitText(wordReplacements.get(word) + " ", 1);
+                        currentTypedWord.setLength(0);
+                        return;
                     }
                 }
+                currentTypedWord.setLength(0);
+            }
+        } else if (codePoint == Constants.CODE_DELETE || codePoint == -5) {
+            if (currentTypedWord.length() > 0) {
+                currentTypedWord.setLength(currentTypedWord.length() - 1);
+            }
+        } else {
+            char c = (char) codePoint;
+            if (!Character.isISOControl(c)) {
+                currentTypedWord.append(c);
             }
         }
+
         final Event event = createSoftwareKeypressEvent(getCodePointForKeyboard(codePoint), isKeyRepeat);
         onEvent(event);
     }
+
 
 
 
