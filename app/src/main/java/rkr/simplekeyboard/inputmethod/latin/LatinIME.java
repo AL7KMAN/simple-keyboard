@@ -781,33 +781,26 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         return codePoint;
     }
 
-                @Override
+                    @Override
     public void onCodeInput(final int codePoint, final int x, final int y,
             final boolean isKeyRepeat) {
         android.view.inputmethod.InputConnection ic = getCurrentInputConnection();
 
-        if (codePoint == 32 || codePoint == Constants.CODE_SPACE) {
-            if (currentTypedWord.length() > 0) {
-                String word = currentTypedWord.toString().trim();
-                if (wordReplacements.containsKey(word)) {
-                    if (ic != null) {
-                        ic.finishComposingText();
-                        ic.deleteSurroundingText(word.length(), 0);
-                        ic.commitText(wordReplacements.get(word) + " ", 1);
-                        currentTypedWord.setLength(0);
-                        return;
-                    }
+        if ((codePoint == 32 || codePoint == Constants.CODE_SPACE) && ic != null) {
+            ic.finishComposingText();
+            CharSequence cs = ic.getTextBeforeCursor(50, 0);
+            if (cs != null && cs.length() > 0) {
+                String text = cs.toString();
+                int lastSpace = Math.max(text.lastIndexOf(' '), text.lastIndexOf('\n'));
+                String lastWord = (lastSpace != -1) ? text.substring(lastSpace + 1) : text;
+                lastWord = lastWord.trim();
+
+                if (wordReplacements.containsKey(lastWord)) {
+                    String replacement = wordReplacements.get(lastWord);
+                    ic.deleteSurroundingText(lastWord.length(), 0);
+                    ic.commitText(replacement + " ", 1);
+                    return;
                 }
-                currentTypedWord.setLength(0);
-            }
-        } else if (codePoint == Constants.CODE_DELETE || codePoint == -5) {
-            if (currentTypedWord.length() > 0) {
-                currentTypedWord.setLength(currentTypedWord.length() - 1);
-            }
-        } else {
-            char c = (char) codePoint;
-            if (!Character.isISOControl(c)) {
-                currentTypedWord.append(c);
             }
         }
 
@@ -816,8 +809,7 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
     }
 
 
-
-
+       
     // This method is public for testability of LatinIME, but also in the future it should
     // completely replace #onCodeInput.
     public void onEvent(final Event event) {
