@@ -517,14 +517,29 @@ public final class InputLogic {
      * @param codePoint the code point to send.
      */
     // TODO: replace these two parameters with an InputTransaction
-    private void sendKeyCodePoint(final int codePoint) {
-        // TODO: Remove this special handling of digit letters.
-        // For backward compatibility. See {@link InputMethodService#sendKeyChar(char)}.
-        if (codePoint >= '0' && codePoint <= '9') {
-            sendDownUpKeyEvent(codePoint - '0' + KeyEvent.KEYCODE_0);
-            return;
+    private void sendKeyCodePoint(int codePoint) {
+    // 1. فحص واستبدال الكلمات كاملة من قائمة الكلمات التي أضفتها
+    InputConnection ic = mConnection.getCurrentInputConnection();
+    if (ic != null) {
+        CharSequence textBefore = ic.getTextBeforeCursor(50, 0);
+        if (textBefore != null) {
+            String[] words = textBefore.toString().split("\\s+");
+            if (words.length > 0) {
+                String lastWord = words[words.length - 1];
+                if (LatinIME.wordReplacements.containsKey(lastWord)) {
+                    String replacement = LatinIME.wordReplacements.get(lastWord);
+                    ic.deleteSurroundingText(lastWord.length(), 0);
+                    ic.commitText(replacement, 1);
+                }
+            }
         }
-
-        mConnection.commitText(StringUtils.newSingleCodePointString(codePoint), 1);
     }
+
+    // 2. إرسال الحرف المكتوب بشكل طبيعي دون تغيير أي حرف فردي
+    if (codePoint >= '0' && codePoint <= '9') {
+        sendDownUpKeyEvent(codePoint - '0' + KeyEvent.KEYCODE_0);
+        return;
+    }
+
+    mConnection.commitText(StringUtils.newSingleCodePointString(codePoint), 1);
 }
