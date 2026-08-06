@@ -569,7 +569,7 @@ public final class InputLogic {
     if (codePoint >= '0' && codePoint <= '9') {
         sendDownUpKeyEvent(codePoint - '0' + KeyEvent.KEYCODE_0);
         return;
-    }
+    
 
     mConnection.commitText(StringUtils.newSingleCodePointString(codePoint), 1);
 }
