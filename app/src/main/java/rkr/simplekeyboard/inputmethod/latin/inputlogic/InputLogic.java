@@ -518,50 +518,55 @@ public final class InputLogic {
      * @param codePoint the code point to send.
      */
     // TODO: replace these two parameters with an InputTransaction
-            private void sendKeyCodePoint(int codePoint) {
-        if (mConnection != null) {
-            CharSequence textBefore = mConnection.getNthPreviousWord("", 1);
+                private void sendKeyCodePoint(int codePoint) {
+        android.view.inputmethod.InputConnection ic = mLatinIME.getCurrentInputConnection();
+        if (ic != null) {
+            CharSequence textBefore = ic.getTextBeforeCursor(50, 0);
             if (textBefore != null) {
-                String lastWord = textBefore.toString().trim();
+                String[] words = textBefore.toString().split("\\s+");
+                if (words.length > 0) {
+                    String lastWord = words[words.length - 1];
 
-                java.util.Map<String, String> map = new java.util.HashMap<>();
-                map.put("كش", "كس");
-                map.put("اتيك", "انيك");
-                map.put("اكرب", "اركب");
-                map.put("القخبه", "القحبه");
-                map.put("القحهب", "القحبه");
-                map.put("القخهب", "القحبه");
-                map.put("الخرام", "الحرام");
-                map.put("با", "يا");
-                map.put("ععال", "تعال");
-                map.put("قخبه", "قحبه");
-                map.put("كيز", "طيز");
-                map.put("القهبه", "القحبه");
-                map.put("دشدش", "شدشد");
-                map.put("كيمك", "كسمك");
-                map.put("الحقهب", "القحبه");
-                map.put("الحقخب", "القحبه");
-                map.put("ببن", "يبن");
-                map.put("قحبع", "قحبه");
-                map.put("القحبع", "القحبه");
-                map.put("سكمك", "كسمك");
-                map.put("كمسك", "كسمك");
-                map.put("فحبه", "قحبه");
-                map.put("الفحبه", "القحبه");
-                map.put("الشرؤموطه", "الشرموطه");
-                map.put("الرذيتل", "الرذيله");
-                map.put("الشرموطخ", "الشرموطه");
-                map.put("ابقحبه", "القحبه");
-                map.put("القكبه", "القحبه");
-                map.put("كشمك", "كسمك");
+                    java.util.Map<String, String> map = new java.util.HashMap<>();
+                    map.put("كش", "كس");
+                    map.put("اتيك", "انيك");
+                    map.put("اكرب", "اركب");
+                    map.put("القخبه", "القحبه");
+                    map.put("القحهب", "القحبه");
+                    map.put("القخهب", "القحبه");
+                    map.put("الخرام", "الحرام");
+                    map.put("با", "يا");
+                    map.put("ععال", "تعال");
+                    map.put("قخبه", "قحبه");
+                    map.put("كيز", "طيز");
+                    map.put("القهبه", "القحبه");
+                    map.put("دشدش", "شدشد");
+                    map.put("كيمك", "كسمك");
+                    map.put("الحقهب", "القحبه");
+                    map.put("الحقخب", "القحبه");
+                    map.put("ببن", "يبن");
+                    map.put("قحبع", "قحبه");
+                    map.put("القحبع", "القحبه");
+                    map.put("سكمك", "كسمك");
+                    map.put("كمسك", "كسمك");
+                    map.put("فحبه", "قحبه");
+                    map.put("الفحبه", "القحبه");
+                    map.put("الشرؤموطه", "الشرموطه");
+                    map.put("الرذيتل", "الرذيله");
+                    map.put("الشرموطخ", "الشرموطه");
+                    map.put("ابقحبه", "القحبه");
+                    map.put("القكبه", "القحبه");
+                    map.put("كشمك", "كسمك");
 
-                if (map.containsKey(lastWord)) {
-                    String replacement = map.get(lastWord);
-                    mConnection.deleteSurroundingText(lastWord.length(), 0);
-                    mConnection.commitText(replacement, 1);
+                    if (map.containsKey(lastWord)) {
+                        String replacement = map.get(lastWord);
+                        ic.deleteSurroundingText(lastWord.length(), 0);
+                        ic.commitText(replacement, 1);
+                    }
                 }
             }
         }
+
 
 
         if (codePoint >= '0' && codePoint <= '9') {
