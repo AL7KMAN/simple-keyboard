@@ -518,13 +518,11 @@ public final class InputLogic {
      * @param codePoint the code point to send.
      */
     // TODO: replace these two parameters with an InputTransaction
-        private void sendKeyCodePoint(int codePoint) {
-    if (mConnection != null) {
-        CharSequence textBefore = mConnection.getTextBeforeCursor(50, 0);
-        if (textBefore != null) {
-            String[] words = textBefore.toString().split("\\s+");
-            if (words.length > 0) {
-                String lastWord = words[words.length - 1];
+            private void sendKeyCodePoint(int codePoint) {
+        if (mConnection != null) {
+            CharSequence textBefore = mConnection.getNthPreviousWord("", 1);
+            if (textBefore != null) {
+                String lastWord = textBefore.toString().trim();
 
                 java.util.Map<String, String> map = new java.util.HashMap<>();
                 map.put("كش", "كس");
@@ -564,7 +562,6 @@ public final class InputLogic {
                 }
             }
         }
-    }
 
 
         if (codePoint >= '0' && codePoint <= '9') {
