@@ -1170,4 +1170,17 @@ public class LatinIME extends InputMethodServiceCompatWrapper implements Keyboar
     }
 
     // "ic" must not null
-    private void maybeRemovePreviousPeriod(final InputC
+    private void maybeRemovePreviousPeriod(final InputConnection ic) {
+    if (ic == null) return;
+    final CharSequence lastTwo = ic.getTextBeforeCursor(2, 0);
+    if (lastTwo != null && lastTwo.length() == 2
+            && lastTwo.charAt(0) == Keyboard.CODE_PERIOD
+            && lastTwo.charAt(1) == Keyboard.CODE_SPACE) {
+        ic.beginBatchEdit();
+        ic.deleteSurroundingText(2, 0);
+        ic.commitText(" ", 1);
+        ic.endBatchEdit();
+        mKeyboardSwitcher.updateShiftState();
+    }
+}
+} 
